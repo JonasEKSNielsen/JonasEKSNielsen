@@ -13,7 +13,7 @@
 </p>
 
 ### <strong>About me</strong>
-I'm Jonas, a 20-year-old data technician apprentice from Denmark.
+I'm Jonas, a 20-year-old data technician from Denmark.
 
 In my day to day I work with Flutter and native mobile apps, with integrations between apps and embedded devices, RFID, and older hardware. I do planning, building, testing, debugging, and in total keep around 15–20 apps running smoothly for real customers.
 
@@ -21,8 +21,8 @@ In my free time I also enjoy working on the backend, where I do system design, d
 
 ### <strong>Skills</strong>
 **Languages:** Dart, C#, Java, Swift  
-**Frameworks:** Flutter, native mobile (iOS/Android)  
-**Backend:** REST APIs, SQL, Docker, authentication (OAuth2)  
+**Frameworks:** Flutter, ASP.NET, native mobile (iOS/Android)  
+**Backend:** REST APIs, SQL, Docker  
 **Systems:** Embedded devices, RFID integration  
 **Architecture:** BLoC, Clean Architecture  
 **Other:** UI/UX, app design, debugging, long-term maintenance

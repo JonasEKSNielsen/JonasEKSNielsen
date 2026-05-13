@@ -112,47 +112,74 @@ function buildTrackListItem(track, rank, formattedDuration) {
   const artistName = track.artists?.map((artist) => artist.name).join(", ") ?? "Unknown artist";
   const badgeColor = RANK_BADGES[(rank - 1) % RANK_BADGES.length];
 
-  return `<li style="
-  list-style: none;
-  margin: 12px 0;
-  padding: 0;
+  return `<div style="
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  background: linear-gradient(135deg, ${background}, #243126);
+  border: 1px solid rgba(237, 232, 213, 0.14);
+  border-left: 8px solid ${badgeColor};
+  border-radius: 18px;
+  padding: 14px 16px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
 ">
   <div style="
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.16);
+    border: 1px solid rgba(237, 232, 213, 0.12);
     display: flex;
     align-items: center;
-    gap: 14px;
-    background: linear-gradient(135deg, ${background}, #243126);
-    border: 1px solid rgba(237, 232, 213, 0.18);
-    border-left: 8px solid ${badgeColor};
-    border-radius: 18px;
-    padding: 14px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    flex: 0 0 auto;
   ">
+    <img src="${albumCoverUrl}" width="72" height="72" style="object-fit: cover; width: 100%; height: 100%;" />
     <div style="
-      width: 42px;
-      height: 42px;
-      border-radius: 999px;
-      background: ${badgeColor};
-      color: #F4F0E6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 15px;
-      flex: 0 0 auto;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    ">${rank}</div>
-    <img src="${albumCoverUrl}" width="72" height="72" style="border-radius: 14px; object-fit: cover; flex: 0 0 auto;" />
-    <div style="color: #EDE8D5; min-width: 0; flex: 1;">
-      <div style="font-size: 16px; font-weight: 700; line-height: 1.25; margin-bottom: 4px;">${escapeHtml(trackName)}</div>
-      <div style="font-size: 14px; opacity: 0.92; margin-bottom: 6px;">${escapeHtml(artistName)}</div>
-      <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 12px; opacity: 0.9; background: rgba(0, 0, 0, 0.16); padding: 4px 10px; border-radius: 999px;">
-        <span>Duration</span>
-        <span>${formattedDuration}</span>
-      </div>
-    </div>
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.28) 100%);
+    "></div>
   </div>
-</li>`;
+  <div style="color: #EDE8D5; min-width: 0;">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap;">
+      <span style="
+        width: 32px;
+        height: 32px;
+        border-radius: 999px;
+        background: ${badgeColor};
+        color: #F4F0E6;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 14px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      ">${rank}</span>
+      <div style="font-size: 16px; font-weight: 700; line-height: 1.25;">${escapeHtml(trackName)}</div>
+    </div>
+    <div style="font-size: 13px; opacity: 0.9;">${escapeHtml(artistName)}</div>
+  </div>
+  <div style="
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #F4F0E6;
+    background: rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(237, 232, 213, 0.12);
+    padding: 8px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+  ">
+    <span>Duration</span>
+    <span>${formattedDuration}</span>
+  </div>
+</div>`;
 }
 
 function escapeRegExp(value) {
@@ -177,20 +204,60 @@ async function buildStatsHtml(tracks) {
     });
   }
 
-  const cards = [];
+  const rows = [];
 
   for (const [index, track] of selectedTracks.entries()) {
     const rank = index + 1;
     const duration = formatDuration(track.duration_ms);
-    cards.push(buildTrackListItem(track, rank, duration));
+    rows.push(buildTrackListItem(track, rank, duration));
   }
 
-  return `<ol style="padding: 0; margin: 0; width: 100%; max-width: 860px;">
-${cards.join("\n")}
-</ol>
+  return `<div style="
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 16px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(49, 66, 45, 0.95), rgba(34, 46, 31, 0.98));
+  border: 1px solid rgba(237, 232, 213, 0.12);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.25);
+">
+  <div style="display: flex; align-items: end; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap;">
+    <div>
+      <div style="color: #F4F0E6; font-size: 20px; font-weight: 800; line-height: 1.2;">Spotify Leaderboard</div>
+      <div style="color: ${CARD_TEXT_COLOR}; opacity: 0.78; font-size: 13px; margin-top: 4px;">Your top 5 tracks, ranked by all-time listens</div>
+    </div>
+    <div style="
+      color: #F4F0E6;
+      background: rgba(0, 0, 0, 0.18);
+      border: 1px solid rgba(237, 232, 213, 0.12);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      white-space: nowrap;
+    ">Updated in Copenhagen time: ${formatTime()}</div>
+  </div>
 
-<div style="width: 100%; max-width: 860px; margin: 10px auto 0; text-align: center; color: ${CARD_TEXT_COLOR}; opacity: 0.78; font-size: 13px;">
-  Updated in Copenhagen time: ${formatTime()}
+  <div style="
+    display: grid;
+    grid-template-columns: 72px 1fr auto;
+    gap: 16px;
+    align-items: center;
+    color: ${CARD_TEXT_COLOR};
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+    padding: 0 16px 8px;
+  ">
+    <div>Rank</div>
+    <div>Track</div>
+    <div style="justify-self: end;">Time</div>
+  </div>
+
+  <div style="display: grid; gap: 12px;">
+${rows.join("\n")}
+  </div>
 </div>`;
 }
 
