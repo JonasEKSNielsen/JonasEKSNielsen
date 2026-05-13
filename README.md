@@ -1,45 +1,41 @@
-## 🎵 Spotify stats
+# Hi, I'm Jonas 🌲
 
+### About me
+I'm Jonas, a 20‑year‑old data technician apprentice from Denmark.  
+
+In my day to day i work with Flutter and native mobile apps, with integrations between apps and embedded devices, RFID readers and older hardware. I do planning, building, testing, debugging and in total keep around 15–20 apps running smoothly for real customers.
+
+In my free time I also enjoy working on the backend. Where I do system design, data handling and communication. This mix of backend and app development has shaped how I think about software and improved my development skills.
+
+---
+
+### Skills
+**Languages:** Dart, C#, Java, Swift  
+**Frameworks:** Flutter, native mobile (iOS/Android)  
+**Backend:** REST APIs, SQL, Docker, authentication (OAuth2)  
+**Systems:** Embedded devices, RFID integration  
+**Architecture:** BLoC, Clean Architecture  
+**Other:** UI/UX, app design, debugging, long‑term maintenance
+
+---
+
+### Featured projects
+- **[Assignly](https://github.com/JonasEKSNielsen/assignly)** — Task management app built in Flutter  
+- **[Navigation App](https://github.com/JonasEKSNielsen/flutter_navigation_app)** — Route calculation using graph algorithms  
+- **[Pawshare](https://github.com/Mercantec-GHC/h4-26-gruppe4-pawshare/)** — C# backend with SQL + REST API  
+
+---
+
+### Currently working on
+- [Maltboxd](https://github.com/JonasEKSNielsen/maltboxd) — a Letterboxd‑style beer rating app  
+- [Navigation App](https://github.com/JonasEKSNielsen/flutter_navigation_app) — expanding with ML‑based route prediction  
+
+---
+
+### My most listened to Spotify songs
 <!-- SPOTIFY_STATS_START -->
-<table>
-<tr>
-<td align="center" width="33%">
-  <a href="https://open.spotify.com/track/1ne9wOtDF2jM6Cm8WBkaER">
-    <img src="https://i.scdn.co/image/ab67616d0000b273f334ccd898713faa1cfd7628" width="150">
-  </a><br>
-  <strong>Rocky Mountain High</strong><br>
-  <em>John Denver</em>
-</td>
-<td align="center" width="33%">
-  <a href="https://open.spotify.com/track/4Ev1LZ4uzjnSvDHpgdyBZK">
-    <img src="https://i.scdn.co/image/ab67616d0000b273f508f0949710aa33a79cf6b2" width="150">
-  </a><br>
-  <strong>Lost for Words</strong><br>
-  <em>Pink Floyd</em>
-</td>
-<td align="center" width="33%">
-  <a href="https://open.spotify.com/track/4bNE6KBB1ZOQ7uz9gx9uFT">
-    <img src="https://i.scdn.co/image/ab67616d0000b273f334ccd898713faa1cfd7628" width="150">
-  </a><br>
-  <strong>Goodbye Again</strong><br>
-  <em>John Denver</em>
-</td></tr>
-<tr>
-<td align="center" width="33%">
-  <a href="https://open.spotify.com/track/4bDIAWaOBGAAk95nyXI6zJ">
-    <img src="https://i.scdn.co/image/ab67616d0000b273cc94dd4730132ccfbd617bf9" width="150">
-  </a><br>
-  <strong>Routines In The Night</strong><br>
-  <em>Twenty One Pilots</em>
-</td>
-<td align="center" width="33%">
-  <a href="https://open.spotify.com/track/1YYhDizHx7PnDhAhko6cDS">
-    <img src="https://i.scdn.co/image/ab67616d0000b273795c9ba853f5a9f7a88b4e31" width="150">
-  </a><br>
-  <strong>Take Me Home, Country Roads - Original Version</strong><br>
-  <em>John Denver</em>
-</td></tr>
-</table>
-
-_Last updated: 13.5.2026, 04.50.47 (Copenhagen time)_
 <!-- SPOTIFY_STATS_END -->
+
+### Contact
+Email: [jonasslothnielsen@hotmail.com](mailto:jonasslothnielsen@hotmail.com)  
+LinkedIn: [jonaseksn](https://www.linkedin.com/in/jonaseksn/)

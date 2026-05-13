@@ -1,4 +1,8 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 
 const {
   SPOTIFY_CLIENT_ID,
@@ -9,6 +13,9 @@ const {
 const README_PATH = new URL("../README.md", import.meta.url);
 const START = "<!-- SPOTIFY_STATS_START -->";
 const END = "<!-- SPOTIFY_STATS_END -->";
+const CARD_TEXT_COLOR = "#EDE8D5";
+const FOREST_FALLBACKS = ["#2F3E2C", "#4A5F3E", "#6B4F3A", "#8C6A4A"];
+const execFileAsync = promisify(execFile);
 
 function assertEnv() {
   const missing = [
@@ -69,44 +76,146 @@ async function getTopTracks(accessToken) {
   return payload.items ?? [];
 }
 
+function formatDuration(ms) {
+  const totalSeconds = Math.round((ms ?? 0) / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = String(totalSeconds % 60).padStart(2, "0");
+  return `${minutes}:${seconds}`;
+}
+
+function toHex({ r, g, b }) {
+  return [r, g, b]
+    .map((value) => Math.max(0, Math.min(255, value)).toString(16).padStart(2, "0"))
+    .join("");
+}
+
+function darkenColor({ r, g, b }) {
+  return {
+    r: Math.round(r * 0.45),
+    g: Math.round(g * 0.45),
+    b: Math.round(b * 0.45),
+  };
+}
+
+async function extractDominantColor(imageUrl) {
+  const response = await fetch(imageUrl);
+
+  if (!response.ok) {
+    throw new Error(`Failed to download album cover (${response.status})`);
+  }
+
+  const imageBuffer = Buffer.from(await response.arrayBuffer());
+  const tempDir = await mkdtemp(join(tmpdir(), "spotify-cover-"));
+  const tempFile = join(tempDir, "cover-image");
+
+  await writeFile(tempFile, imageBuffer);
+
+  try {
+    const powershellScript = `
+Add-Type -AssemblyName System.Drawing
+$bitmap = [System.Drawing.Bitmap]::FromFile($args[0])
+try {
+  [long]$red = 0
+  [long]$green = 0
+  [long]$blue = 0
+  [long]$samples = 0
+
+  for ($y = 0; $y -lt $bitmap.Height; $y++) {
+    for ($x = 0; $x -lt $bitmap.Width; $x++) {
+      $color = $bitmap.GetPixel($x, $y)
+      $red += $color.R
+      $green += $color.G
+      $blue += $color.B
+      $samples++
+    }
+  }
+
+  if ($samples -eq 0) {
+    @{ r = 47; g = 62; b = 44 } | ConvertTo-Json -Compress
+  } else {
+    @{ r = [Math]::Round($red / $samples); g = [Math]::Round($green / $samples); b = [Math]::Round($blue / $samples) } | ConvertTo-Json -Compress
+  }
+}
+finally {
+  $bitmap.Dispose()
+}
+`;
+
+    const { stdout } = await execFileAsync(
+      "powershell.exe",
+      ["-NoProfile", "-Command", powershellScript, tempFile],
+      { windowsHide: true, maxBuffer: 1024 * 1024 }
+    );
+
+    const dominant = JSON.parse(stdout.toString().trim());
+    return `#${toHex(darkenColor(dominant))}`;
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+}
+
+async function buildTrackCard(track) {
+  const albumCoverUrl = track.album?.images?.[0]?.url ?? "";
+  const fallbackIndex = Math.abs((track.name ?? "").length) % FOREST_FALLBACKS.length;
+  const background = albumCoverUrl
+    ? await extractDominantColor(albumCoverUrl)
+    : FOREST_FALLBACKS[fallbackIndex];
+  const trackName = track.name ?? "Unknown track";
+  const artistName = track.artists?.map((artist) => artist.name).join(", ") ?? "Unknown artist";
+  const duration = formatDuration(track.duration_ms);
+
+  return `<div style="
+  width: 70%;
+  margin: 12px auto;
+  background: ${background};
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+">
+  <img src="${albumCoverUrl}" width="70" style="border-radius: 10px; margin-right: 14px;" />
+  <div style="color: #EDE8D5;">
+    <div style="font-size: 16px; font-weight: bold;">${trackName}</div>
+    <div style="font-size: 14px; opacity: 0.9;">${artistName}</div>
+    <div style="font-size: 13px; opacity: 0.7;">${duration}</div>
+  </div>
+</div>`;
+}
+
 function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function buildStatsMarkdown(tracks) {
+async function buildStatsHtml(tracks) {
   const formatTime = () =>
     new Date().toLocaleString("da-DK", {
       timeZone: "Europe/Copenhagen",
       hour12: false,
     });
 
-  const cells = tracks.map((track) => {
-    const img = track.album?.images?.[0]?.url ?? "";
-    const name = track.name ?? "Unknown track";
-    const artists = track.artists?.map((a) => a.name).join(", ") ?? "Unknown artist";
-    const url = track.external_urls?.spotify ?? "https://open.spotify.com/";
+  const selectedTracks = [...tracks.slice(0, 5)];
 
-    return `
-<td align="center" width="33%">
-  <a href="${url}">
-    <img src="${img}" width="150">
-  </a><br>
-  <strong>${name}</strong><br>
-  <em>${artists}</em>
-</td>`;
-  });
+  while (selectedTracks.length < 5) {
+    selectedTracks.push({
+      name: "No track available",
+      artists: [{ name: "Spotify" }],
+      duration_ms: 0,
+      album: { images: [] },
+    });
+  }
 
-  const row1 = `<tr>${cells.slice(0, 3).join("")}</tr>`;
-  const row2 = `<tr>${cells.slice(3, 5).join("")}</tr>`;
+  const cards = [];
 
-  return `
-<table>
-${row1}
-${row2}
-</table>
+  for (const track of selectedTracks) {
+    cards.push(await buildTrackCard(track));
+  }
 
-_Last updated: ${formatTime()} (Copenhagen time)_
-  `.trim();
+  return `${cards.join("\n\n")}
+
+<div style="width: 70%; margin: 8px auto 0; text-align: center; color: ${CARD_TEXT_COLOR}; opacity: 0.75; font-size: 13px;">
+  Copenhagen time: ${formatTime()}
+</div>`;
 }
 
 
@@ -127,7 +236,7 @@ async function main() {
   assertEnv();
   const token = await getAccessToken();
   const tracks = await getTopTracks(token);
-  const stats = buildStatsMarkdown(tracks);
+  const stats = await buildStatsHtml(tracks);
   await updateReadme(stats);
   console.log("README Spotify stats updated.");
 }
