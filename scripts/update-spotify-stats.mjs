@@ -11,6 +11,7 @@ const START = "<!-- SPOTIFY_STATS_START -->";
 const END = "<!-- SPOTIFY_STATS_END -->";
 const CARD_TEXT_COLOR = "#EDE8D5";
 const FOREST_FALLBACKS = ["#2F3E2C", "#4A5F3E", "#6B4F3A", "#8C6A4A"];
+const RANK_BADGES = ["#8C6A4A", "#6B8E23", "#4A5F3E", "#A37C27", "#4E6E58"];
 
 function assertEnv() {
   const missing = [
@@ -78,6 +79,15 @@ function formatDuration(ms) {
   return `${minutes}:${seconds}`;
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function hashString(value) {
   let hash = 0;
 
@@ -95,30 +105,54 @@ function pickBackgroundColor(track) {
   return FOREST_FALLBACKS[fallbackIndex];
 }
 
-async function buildTrackCard(track) {
+function buildTrackListItem(track, rank, formattedDuration) {
   const albumCoverUrl = track.album?.images?.[0]?.url ?? "";
   const background = pickBackgroundColor(track);
   const trackName = track.name ?? "Unknown track";
   const artistName = track.artists?.map((artist) => artist.name).join(", ") ?? "Unknown artist";
-  const duration = formatDuration(track.duration_ms);
+  const badgeColor = RANK_BADGES[(rank - 1) % RANK_BADGES.length];
 
-  return `<div style="
-  width: 70%;
-  margin: 12px auto;
-  background: ${background};
-  border-radius: 14px;
-  padding: 14px;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  return `<li style="
+  list-style: none;
+  margin: 12px 0;
+  padding: 0;
 ">
-  <img src="${albumCoverUrl}" width="70" style="border-radius: 10px; margin-right: 14px;" />
-  <div style="color: #EDE8D5;">
-    <div style="font-size: 16px; font-weight: bold;">${trackName}</div>
-    <div style="font-size: 14px; opacity: 0.9;">${artistName}</div>
-    <div style="font-size: 13px; opacity: 0.7;">${duration}</div>
+  <div style="
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: linear-gradient(135deg, ${background}, #243126);
+    border: 1px solid rgba(237, 232, 213, 0.18);
+    border-left: 8px solid ${badgeColor};
+    border-radius: 18px;
+    padding: 14px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+  ">
+    <div style="
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      background: ${badgeColor};
+      color: #F4F0E6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 15px;
+      flex: 0 0 auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    ">${rank}</div>
+    <img src="${albumCoverUrl}" width="72" height="72" style="border-radius: 14px; object-fit: cover; flex: 0 0 auto;" />
+    <div style="color: #EDE8D5; min-width: 0; flex: 1;">
+      <div style="font-size: 16px; font-weight: 700; line-height: 1.25; margin-bottom: 4px;">${escapeHtml(trackName)}</div>
+      <div style="font-size: 14px; opacity: 0.92; margin-bottom: 6px;">${escapeHtml(artistName)}</div>
+      <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 12px; opacity: 0.9; background: rgba(0, 0, 0, 0.16); padding: 4px 10px; border-radius: 999px;">
+        <span>Duration</span>
+        <span>${formattedDuration}</span>
+      </div>
+    </div>
   </div>
-</div>`;
+</li>`;
 }
 
 function escapeRegExp(value) {
@@ -145,14 +179,18 @@ async function buildStatsHtml(tracks) {
 
   const cards = [];
 
-  for (const track of selectedTracks) {
-    cards.push(await buildTrackCard(track));
+  for (const [index, track] of selectedTracks.entries()) {
+    const rank = index + 1;
+    const duration = formatDuration(track.duration_ms);
+    cards.push(buildTrackListItem(track, rank, duration));
   }
 
-  return `${cards.join("\n\n")}
+  return `<ol style="padding: 0; margin: 0; width: 100%; max-width: 860px;">
+${cards.join("\n")}
+</ol>
 
-<div style="width: 70%; margin: 8px auto 0; text-align: center; color: ${CARD_TEXT_COLOR}; opacity: 0.75; font-size: 13px;">
-  Copenhagen time: ${formatTime()}
+<div style="width: 100%; max-width: 860px; margin: 10px auto 0; text-align: center; color: ${CARD_TEXT_COLOR}; opacity: 0.78; font-size: 13px;">
+  Updated in Copenhagen time: ${formatTime()}
 </div>`;
 }
 
