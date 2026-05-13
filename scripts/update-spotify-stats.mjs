@@ -1,8 +1,4 @@
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
-import { execFile } from "node:child_process";
-import { promisify } from "node:util";
+import { readFile, writeFile } from "node:fs/promises";
 
 const {
   SPOTIFY_CLIENT_ID,
@@ -15,7 +11,6 @@ const START = "<!-- SPOTIFY_STATS_START -->";
 const END = "<!-- SPOTIFY_STATS_END -->";
 const CARD_TEXT_COLOR = "#EDE8D5";
 const FOREST_FALLBACKS = ["#2F3E2C", "#4A5F3E", "#6B4F3A", "#8C6A4A"];
-const execFileAsync = promisify(execFile);
 
 function assertEnv() {
   const missing = [
@@ -83,83 +78,26 @@ function formatDuration(ms) {
   return `${minutes}:${seconds}`;
 }
 
-function toHex({ r, g, b }) {
-  return [r, g, b]
-    .map((value) => Math.max(0, Math.min(255, value)).toString(16).padStart(2, "0"))
-    .join("");
-}
+function hashString(value) {
+  let hash = 0;
 
-function darkenColor({ r, g, b }) {
-  return {
-    r: Math.round(r * 0.45),
-    g: Math.round(g * 0.45),
-    b: Math.round(b * 0.45),
-  };
-}
-
-async function extractDominantColor(imageUrl) {
-  const response = await fetch(imageUrl);
-
-  if (!response.ok) {
-    throw new Error(`Failed to download album cover (${response.status})`);
+  for (let index = 0; index < value.length; index++) {
+    hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
   }
 
-  const imageBuffer = Buffer.from(await response.arrayBuffer());
-  const tempDir = await mkdtemp(join(tmpdir(), "spotify-cover-"));
-  const tempFile = join(tempDir, "cover-image");
-
-  await writeFile(tempFile, imageBuffer);
-
-  try {
-    const powershellScript = `
-Add-Type -AssemblyName System.Drawing
-$bitmap = [System.Drawing.Bitmap]::FromFile($args[0])
-try {
-  [long]$red = 0
-  [long]$green = 0
-  [long]$blue = 0
-  [long]$samples = 0
-
-  for ($y = 0; $y -lt $bitmap.Height; $y++) {
-    for ($x = 0; $x -lt $bitmap.Width; $x++) {
-      $color = $bitmap.GetPixel($x, $y)
-      $red += $color.R
-      $green += $color.G
-      $blue += $color.B
-      $samples++
-    }
-  }
-
-  if ($samples -eq 0) {
-    @{ r = 47; g = 62; b = 44 } | ConvertTo-Json -Compress
-  } else {
-    @{ r = [Math]::Round($red / $samples); g = [Math]::Round($green / $samples); b = [Math]::Round($blue / $samples) } | ConvertTo-Json -Compress
-  }
+  return hash;
 }
-finally {
-  $bitmap.Dispose()
-}
-`;
 
-    const { stdout } = await execFileAsync(
-      "powershell.exe",
-      ["-NoProfile", "-Command", powershellScript, tempFile],
-      { windowsHide: true, maxBuffer: 1024 * 1024 }
-    );
-
-    const dominant = JSON.parse(stdout.toString().trim());
-    return `#${toHex(darkenColor(dominant))}`;
-  } finally {
-    await rm(tempDir, { recursive: true, force: true });
-  }
+function pickBackgroundColor(track) {
+  const artistName = track.artists?.map((artist) => artist.name).join(", ") ?? "";
+  const seed = `${track.name ?? "Unknown track"}|${artistName}|${track.album?.name ?? ""}`;
+  const fallbackIndex = hashString(seed) % FOREST_FALLBACKS.length;
+  return FOREST_FALLBACKS[fallbackIndex];
 }
 
 async function buildTrackCard(track) {
   const albumCoverUrl = track.album?.images?.[0]?.url ?? "";
-  const fallbackIndex = Math.abs((track.name ?? "").length) % FOREST_FALLBACKS.length;
-  const background = albumCoverUrl
-    ? await extractDominantColor(albumCoverUrl)
-    : FOREST_FALLBACKS[fallbackIndex];
+  const background = pickBackgroundColor(track);
   const trackName = track.name ?? "Unknown track";
   const artistName = track.artists?.map((artist) => artist.name).join(", ") ?? "Unknown artist";
   const duration = formatDuration(track.duration_ms);
