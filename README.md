@@ -8,9 +8,8 @@
 </p>
 
 <p align="center">
-	<img src="https://img.shields.io/badge/Focus-Mobile%20apps-4A5F3E?style=for-the-badge" />
-	<img src="https://img.shields.io/badge/Backend-Systems%20%26%20APIs-6B4F3A?style=for-the-badge" />
-	<img src="https://img.shields.io/badge/Maintenance-Keeping%20things%20alive-8C6A4A?style=for-the-badge" />
+	<img src="https://img.shields.io/badge/Mobile-Dart%20%26%20Flutter-4A5F3E?style=for-the-badge" />
+	<img src="https://img.shields.io/badge/Backend-C%23%20%26%20ASP.NET-6B4F3A?style=for-the-badge" />
 </p>
 
 ### <strong>About me</strong>
