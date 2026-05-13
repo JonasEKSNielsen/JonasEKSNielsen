@@ -105,71 +105,18 @@ function pickBackgroundColor(track) {
   return FOREST_FALLBACKS[fallbackIndex];
 }
 
-function buildTrackPodiumCard(track, rank, formattedDuration, placement) {
+function buildSpotifyTableCell(track) {
   const albumCoverUrl = track.album?.images?.[0]?.url ?? "";
-  const background = pickBackgroundColor(track);
   const trackName = track.name ?? "Unknown track";
   const artistName = track.artists?.map((artist) => artist.name).join(", ") ?? "Unknown artist";
-  const badgeColor = RANK_BADGES[(rank - 1) % RANK_BADGES.length];
-  const minHeight = placement === "top" ? (rank === 1 ? "248px" : "226px") : "208px";
-  const lift = rank === 1 ? "transform: translateY(-8px);" : "";
-  const shadow = rank === 1 ? "box-shadow: 0 18px 32px rgba(0, 0, 0, 0.28);" : "box-shadow: 0 12px 22px rgba(0, 0, 0, 0.22);";
 
-  return `<div style="
-  min-height: ${minHeight};
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: linear-gradient(180deg, #1F2430, #161B23);
-  border: 1px solid rgba(237, 232, 213, 0.14);
-  border-bottom: 10px solid ${badgeColor};
-  border-radius: 22px;
-  padding: 16px;
-  overflow: hidden;
-  ${shadow}
-  ${lift}
-">
-  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
-    <div style="
-      width: 38px;
-      height: 38px;
-      border-radius: 999px;
-      background: ${badgeColor};
-      color: #F4F0E6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 15px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      flex: 0 0 auto;
-    ">${rank}</div>
-    <div style="
-      flex: 1;
-      min-height: 88px;
-      border-radius: 18px;
-      background: rgba(0, 0, 0, 0.16);
-      border: 1px solid rgba(237, 232, 213, 0.12);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-    ">
-      <img src="${albumCoverUrl}" width="88" height="88" style="object-fit: cover; width: 100%; height: 100%;" />
-      <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.28) 100%);"></div>
-    </div>
-  </div>
-
-  <div style="color: #EDE8D5; min-width: 0;">
-    <div style="font-size: 16px; font-weight: 700; line-height: 1.25; margin-bottom: 6px;">${escapeHtml(trackName)}</div>
-    <div style="font-size: 13px; opacity: 0.9; margin-bottom: 10px;">${escapeHtml(artistName)}</div>
-    <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: #F4F0E6; background: rgba(0, 0, 0, 0.18); border: 1px solid rgba(237, 232, 213, 0.12); padding: 8px 12px; border-radius: 999px; white-space: nowrap;">
-      <span>Duration</span>
-      <span>${formattedDuration}</span>
-    </div>
-  </div>
-</div>`;
+  return `<td align="center" width="200">
+  <img src="${albumCoverUrl}" width="150" alt="${escapeHtml(trackName)}" />
+  <br/>
+  <strong>${escapeHtml(trackName)}</strong>
+  <br/>
+  <sub>${escapeHtml(artistName)}</sub>
+</td>`;
 }
 
 function buildFallbackTrack() {
@@ -186,12 +133,6 @@ function escapeRegExp(value) {
 }
 
 async function buildStatsHtml(tracks) {
-  const formatTime = () =>
-    new Date().toLocaleString("da-DK", {
-      timeZone: "Europe/Copenhagen",
-      hour12: false,
-    });
-
   const selectedTracks = [...tracks.slice(0, 5)];
 
   while (selectedTracks.length < 5) {
@@ -201,50 +142,21 @@ async function buildStatsHtml(tracks) {
   const topThree = selectedTracks.slice(0, 3);
   const bottomTwo = selectedTracks.slice(3, 5);
 
-  return `<div style="
-  width: 100%;
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 16px;
-  border-radius: 24px;
-  background: linear-gradient(180deg, #1A1F28, #11151C);
-  border: 1px solid rgba(237, 232, 213, 0.12);
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.25);
-">
-  <div style="display: flex; align-items: end; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap;">
-    <div>
-      <div style="color: #F4F0E6; font-size: 20px; font-weight: 800; line-height: 1.2;">Spotify Top 5</div>
-      <div style="color: ${CARD_TEXT_COLOR}; opacity: 0.78; font-size: 13px; margin-top: 4px;">Your most listened to tracks, laid out like a podium</div>
-    </div>
-    <div style="
-      color: #F4F0E6;
-      background: rgba(0, 0, 0, 0.18);
-      border: 1px solid rgba(237, 232, 213, 0.12);
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      white-space: nowrap;
-    ">Updated in Copenhagen time: ${formatTime()}</div>
-  </div>
+  return `<table>
+  <tr>
+${topThree.map((track) => buildSpotifyTableCell(track)).join("\n")}
+  </tr>
 
-  <div style="display: grid; gap: 14px;">
-    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-items: end;">
-${topThree
-  .map((track, index) => buildTrackPodiumCard(track, index + 1, formatDuration(track.duration_ms), "top"))
-  .join("\n")}
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; max-width: 620px; margin: 0 auto; align-items: end;">
-${bottomTwo
-  .map((track, index) => buildTrackPodiumCard(track, index + 4, formatDuration(track.duration_ms), "bottom"))
-  .join("\n")}
-    </div>
-  </div>
-
-  <div style="margin-top: 14px; text-align: center; color: ${CARD_TEXT_COLOR}; opacity: 0.72; font-size: 13px;">
-    Last updated in Copenhagen time: ${formatTime()}
-  </div>
-</div>`;
+  <tr>
+    <td colspan="3" align="center">
+      <table>
+        <tr>
+${bottomTwo.map((track) => buildSpotifyTableCell(track)).join("\n")}
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>`;
 }
 
 

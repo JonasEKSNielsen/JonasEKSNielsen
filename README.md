@@ -36,20 +36,6 @@ In my free time I also enjoy working on the backend, where I do system design, d
 - [Maltboxd](https://github.com/JonasEKSNielsen/maltboxd) — a Letterboxd-style beer rating app
 - [Navigation App](https://github.com/JonasEKSNielsen/flutter_navigation_app) — expanding with ML-based route prediction
 
-### <strong>GitHub stats</strong>
-<table>
-	<tr>
-		<td align="center">
-			<img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=JonasEKSNielsen&amp;theme=github_dark" alt="GitHub profile details" width="100%" />
-		</td>
-	</tr>
-	<tr>
-		<td align="center">
-			<img src="https://github-readme-streak-stats.herokuapp.com/?user=JonasEKSNielsen&amp;theme=github_dark&amp;hide_border=false" alt="GitHub streak stats" width="100%" />
-		</td>
-	</tr>
-</table>
-
 ### <strong>My most listened to Spotify songs</strong>
 <!-- SPOTIFY_STATS_START -->
 <!-- SPOTIFY_STATS_END -->
