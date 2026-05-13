@@ -105,13 +105,13 @@ function pickBackgroundColor(track) {
   return FOREST_FALLBACKS[fallbackIndex];
 }
 
-function buildSpotifyTableCell(track) {
+function buildSpotifyTableCell(track, cellWidth) {
   const albumCoverUrl = track.album?.images?.[0]?.url ?? "";
   const trackName = track.name ?? "Unknown track";
   const artistName = track.artists?.map((artist) => artist.name).join(", ") ?? "Unknown artist";
 
-  return `<td align="center" width="200">
-  <img src="${albumCoverUrl}" width="150" alt="${escapeHtml(trackName)}" />
+  return `<td align="center" width="${cellWidth}" style="width: ${cellWidth}; padding: 10px; vertical-align: top;">
+  <img src="${albumCoverUrl}" width="150" style="max-width: 100%; height: auto;" alt="${escapeHtml(trackName)}" />
   <br/>
   <strong>${escapeHtml(trackName)}</strong>
   <br/>
@@ -142,16 +142,16 @@ async function buildStatsHtml(tracks) {
   const topThree = selectedTracks.slice(0, 3);
   const bottomTwo = selectedTracks.slice(3, 5);
 
-  return `<table>
+  return `<table width="100%" style="width: 100%; table-layout: fixed; border-collapse: collapse;">
   <tr>
-${topThree.map((track) => buildSpotifyTableCell(track)).join("\n")}
+${topThree.map((track) => buildSpotifyTableCell(track, "33.33%")).join("\n")}
   </tr>
 
   <tr>
-    <td colspan="3" align="center">
-      <table>
+    <td colspan="3" align="center" style="padding-top: 12px;">
+      <table width="66%" style="width: 66%; table-layout: fixed; border-collapse: collapse; margin: 0 auto;">
         <tr>
-${bottomTwo.map((track) => buildSpotifyTableCell(track)).join("\n")}
+${bottomTwo.map((track) => buildSpotifyTableCell(track, "50%")).join("\n")}
         </tr>
       </table>
     </td>
