@@ -48,18 +48,18 @@ In my free time I also enjoy working on the backend, where I do system design, d
   <sub>John Denver</sub>
 </td>
 <td align="center" width="33.33%" style="width: 33.33%; padding: 10px; vertical-align: top;">
-  <img src="https://i.scdn.co/image/ab67616d0000b273f508f0949710aa33a79cf6b2" width="150" style="max-width: 100%; height: auto;" alt="Lost for Words" />
-  <br/>
-  <strong>Lost for Words</strong>
-  <br/>
-  <sub>Pink Floyd</sub>
-</td>
-<td align="center" width="33.33%" style="width: 33.33%; padding: 10px; vertical-align: top;">
   <img src="https://i.scdn.co/image/ab67616d0000b273f334ccd898713faa1cfd7628" width="150" style="max-width: 100%; height: auto;" alt="Goodbye Again" />
   <br/>
   <strong>Goodbye Again</strong>
   <br/>
   <sub>John Denver</sub>
+</td>
+<td align="center" width="33.33%" style="width: 33.33%; padding: 10px; vertical-align: top;">
+  <img src="https://i.scdn.co/image/ab67616d0000b273f508f0949710aa33a79cf6b2" width="150" style="max-width: 100%; height: auto;" alt="Lost for Words" />
+  <br/>
+  <strong>Lost for Words</strong>
+  <br/>
+  <sub>Pink Floyd</sub>
 </td>
   </tr>
 
@@ -68,18 +68,18 @@ In my free time I also enjoy working on the backend, where I do system design, d
       <table width="66%" style="width: 66%; table-layout: fixed; border-collapse: collapse; margin: 0 auto;">
         <tr>
 <td align="center" width="50%" style="width: 50%; padding: 10px; vertical-align: top;">
-  <img src="https://i.scdn.co/image/ab67616d0000b273cc94dd4730132ccfbd617bf9" width="150" style="max-width: 100%; height: auto;" alt="Routines In The Night" />
-  <br/>
-  <strong>Routines In The Night</strong>
-  <br/>
-  <sub>Twenty One Pilots</sub>
-</td>
-<td align="center" width="50%" style="width: 50%; padding: 10px; vertical-align: top;">
   <img src="https://i.scdn.co/image/ab67616d0000b273795c9ba853f5a9f7a88b4e31" width="150" style="max-width: 100%; height: auto;" alt="Take Me Home, Country Roads - Original Version" />
   <br/>
   <strong>Take Me Home, Country Roads - Original Version</strong>
   <br/>
   <sub>John Denver</sub>
+</td>
+<td align="center" width="50%" style="width: 50%; padding: 10px; vertical-align: top;">
+  <img src="https://i.scdn.co/image/ab67616d0000b273828e52cfb7bf22869349799e" width="150" style="max-width: 100%; height: auto;" alt="Wish You Were Here" />
+  <br/>
+  <strong>Wish You Were Here</strong>
+  <br/>
+  <sub>Pink Floyd</sub>
 </td>
         </tr>
       </table>
