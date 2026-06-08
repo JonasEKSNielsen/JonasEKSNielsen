@@ -13,7 +13,7 @@
 </p>
 
 ### <strong>About me</strong>
-I'm Jonas, a 20-year-old data technician from Denmark.
+I'm Jonas, a 21-year-old data technician from Denmark.
 
 In my day to day I work with Flutter and native mobile apps, with integrations between apps and embedded devices, RFID, and older hardware. I do planning, building, testing, debugging, and in total keep around 15–20 apps running smoothly for real customers.
 
