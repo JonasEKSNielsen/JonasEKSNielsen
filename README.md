@@ -48,18 +48,18 @@ In my free time I also enjoy working on the backend, where I do system design, d
   <sub>John Denver</sub>
 </td>
 <td align="center" width="33.33%" style="width: 33.33%; padding: 10px; vertical-align: top;">
-  <img src="https://i.scdn.co/image/ab67616d0000b273f334ccd898713faa1cfd7628" width="150" style="max-width: 100%; height: auto;" alt="Goodbye Again" />
-  <br/>
-  <strong>Goodbye Again</strong>
-  <br/>
-  <sub>John Denver</sub>
-</td>
-<td align="center" width="33.33%" style="width: 33.33%; padding: 10px; vertical-align: top;">
   <img src="https://i.scdn.co/image/ab67616d0000b273f508f0949710aa33a79cf6b2" width="150" style="max-width: 100%; height: auto;" alt="Lost for Words" />
   <br/>
   <strong>Lost for Words</strong>
   <br/>
   <sub>Pink Floyd</sub>
+</td>
+<td align="center" width="33.33%" style="width: 33.33%; padding: 10px; vertical-align: top;">
+  <img src="https://i.scdn.co/image/ab67616d0000b273f334ccd898713faa1cfd7628" width="150" style="max-width: 100%; height: auto;" alt="Goodbye Again" />
+  <br/>
+  <strong>Goodbye Again</strong>
+  <br/>
+  <sub>John Denver</sub>
 </td>
   </tr>
 
