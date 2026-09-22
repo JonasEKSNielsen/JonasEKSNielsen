@@ -68,18 +68,18 @@ In my free time I also enjoy working on the backend, where I do system design, d
       <table width="66%" style="width: 66%; table-layout: fixed; border-collapse: collapse; margin: 0 auto;">
         <tr>
 <td align="center" width="50%" style="width: 50%; padding: 10px; vertical-align: top;">
-  <img src="https://i.scdn.co/image/ab67616d0000b273795c9ba853f5a9f7a88b4e31" width="150" style="max-width: 100%; height: auto;" alt="Take Me Home, Country Roads - Original Version" />
-  <br/>
-  <strong>Take Me Home, Country Roads - Original Version</strong>
-  <br/>
-  <sub>John Denver</sub>
-</td>
-<td align="center" width="50%" style="width: 50%; padding: 10px; vertical-align: top;">
   <img src="https://i.scdn.co/image/ab67616d0000b273828e52cfb7bf22869349799e" width="150" style="max-width: 100%; height: auto;" alt="Wish You Were Here" />
   <br/>
   <strong>Wish You Were Here</strong>
   <br/>
   <sub>Pink Floyd</sub>
+</td>
+<td align="center" width="50%" style="width: 50%; padding: 10px; vertical-align: top;">
+  <img src="https://i.scdn.co/image/ab67616d0000b273795c9ba853f5a9f7a88b4e31" width="150" style="max-width: 100%; height: auto;" alt="Take Me Home, Country Roads - Original Version" />
+  <br/>
+  <strong>Take Me Home, Country Roads - Original Version</strong>
+  <br/>
+  <sub>John Denver</sub>
 </td>
         </tr>
       </table>
