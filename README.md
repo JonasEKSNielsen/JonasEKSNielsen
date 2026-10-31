@@ -1,6 +1,5 @@
-# <a href="https://www.linkedin.com/in/jonaseksn/">Jonas Nielsen</a>
+<a href="https://www.linkedin.com/in/jonaseksn/"><img src="assets/github_background.png" alt="GitHub profile banner" width="100%" /></a>
 
-<img src="assets/github_background.png" alt="GitHub profile banner" width="100%" />
 
 
 ### <strong>About me</strong>
