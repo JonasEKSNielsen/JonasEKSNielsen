@@ -30,16 +30,16 @@ Outside of work I am passionate about woodcarving, music and other creative hobb
   <sub>Pink Floyd</sub>
 </td>
 <td align="center" width="33.33%" style="width: 33.33%; padding: 10px; vertical-align: top;">
-  <img src="https://i.scdn.co/image/ab67616d0000b273f334ccd898713faa1cfd7628" width="150" style="max-width: 100%; height: auto;" alt="Rocky Mountain High" />
+  <img src="https://i.scdn.co/image/ab67616d0000b273f334ccd898713faa1cfd7628" width="150" style="max-width: 100%; height: auto;" alt="Goodbye Again" />
   <br/>
-  <strong>Rocky Mountain High</strong>
+  <strong>Goodbye Again</strong>
   <br/>
   <sub>John Denver</sub>
 </td>
 <td align="center" width="33.33%" style="width: 33.33%; padding: 10px; vertical-align: top;">
-  <img src="https://i.scdn.co/image/ab67616d0000b273f334ccd898713faa1cfd7628" width="150" style="max-width: 100%; height: auto;" alt="Goodbye Again" />
+  <img src="https://i.scdn.co/image/ab67616d0000b273f334ccd898713faa1cfd7628" width="150" style="max-width: 100%; height: auto;" alt="Rocky Mountain High" />
   <br/>
-  <strong>Goodbye Again</strong>
+  <strong>Rocky Mountain High</strong>
   <br/>
   <sub>John Denver</sub>
 </td>
@@ -57,11 +57,11 @@ Outside of work I am passionate about woodcarving, music and other creative hobb
   <sub>Pink Floyd</sub>
 </td>
 <td align="center" width="50%" style="width: 50%; padding: 10px; vertical-align: top;">
-  <img src="https://i.scdn.co/image/ab67616d0000b273795c9ba853f5a9f7a88b4e31" width="150" style="max-width: 100%; height: auto;" alt="Take Me Home, Country Roads - Original Version" />
+  <img src="https://i.scdn.co/image/ab67616d0000b273d61bcbfe780790ca9f4c5dfe" width="150" style="max-width: 100%; height: auto;" alt="PARTY&#39;S OVER" />
   <br/>
-  <strong>Take Me Home, Country Roads - Original Version</strong>
+  <strong>PARTY&#39;S OVER</strong>
   <br/>
-  <sub>John Denver</sub>
+  <sub>Joey Valence &amp; Brae</sub>
 </td>
         </tr>
       </table>
